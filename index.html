@@ -4,8 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ruotsin opetuskello</title>
+
 <style>
-  * { box-sizing: border-box; }
+  * {
+    box-sizing: border-box;
+  }
 
   body {
     margin: 0;
@@ -31,8 +34,13 @@
     user-select: none;
   }
 
-  .hand { cursor: grab; }
-  .hand:active { cursor: grabbing; }
+  .hand {
+    cursor: grab;
+  }
+
+  .hand:active {
+    cursor: grabbing;
+  }
 
   .hit {
     stroke: transparent;
@@ -89,7 +97,9 @@
     cursor: pointer;
   }
 
-  button:hover { background: #dcecff; }
+  button:hover {
+    background: #dcecff;
+  }
 
   button:focus-visible {
     outline: 3px solid #e59100;
@@ -131,49 +141,113 @@
   }
 </style>
 </head>
+
 <body>
-
 <main>
-  <svg id="clock" viewBox="0 0 600 600"
-       aria-label="Vedä kellon viisareita tai käytä painikkeita.">
 
-    <circle cx="300" cy="300" r="285"
-            fill="white" stroke="#173850" stroke-width="5"/>
+  <svg
+    id="clock"
+    viewBox="0 0 600 600"
+    aria-label="Vedä kellon viisareita tai käytä painikkeita."
+  >
+    <circle
+      cx="300"
+      cy="300"
+      r="285"
+      fill="white"
+      stroke="#173850"
+      stroke-width="5"
+    />
 
     <g id="ticks"></g>
     <g id="numbers"></g>
 
-    <g id="hour" class="hand" tabindex="0"
-       role="slider" aria-label="Tuntiviisari"
-       aria-valuemin="1" aria-valuemax="12">
-      <line class="hit"
-            x1="300" y1="313" x2="300" y2="153"/>
-      <line x1="300" y1="313" x2="300" y2="153"
-            stroke="#173850" stroke-width="18"
-            stroke-linecap="round"/>
+    <g
+      id="hour"
+      class="hand"
+      tabindex="0"
+      role="slider"
+      aria-label="Tuntiviisari"
+      aria-valuemin="1"
+      aria-valuemax="12"
+    >
+      <line
+        class="hit"
+        x1="300"
+        y1="313"
+        x2="300"
+        y2="153"
+      />
+      <line
+        x1="300"
+        y1="313"
+        x2="300"
+        y2="153"
+        stroke="#173850"
+        stroke-width="18"
+        stroke-linecap="round"
+      />
     </g>
 
-    <g id="minute" class="hand" tabindex="0"
-       role="slider" aria-label="Minuuttiviisari"
-       aria-valuemin="0" aria-valuemax="59">
-      <line class="hit"
-            x1="300" y1="320" x2="300" y2="84"/>
-      <line x1="300" y1="320" x2="300" y2="84"
-            stroke="#006cdb" stroke-width="12"
-            stroke-linecap="round"/>
-      <circle cx="300" cy="89" r="10" fill="#006cdb"/>
+    <g
+      id="minute"
+      class="hand"
+      tabindex="0"
+      role="slider"
+      aria-label="Minuuttiviisari"
+      aria-valuemin="0"
+      aria-valuemax="59"
+    >
+      <line
+        class="hit"
+        x1="300"
+        y1="320"
+        x2="300"
+        y2="84"
+      />
+      <line
+        x1="300"
+        y1="320"
+        x2="300"
+        y2="84"
+        stroke="#006cdb"
+        stroke-width="12"
+        stroke-linecap="round"
+      />
+      <circle
+        cx="300"
+        cy="89"
+        r="10"
+        fill="#006cdb"
+      />
     </g>
 
-    <circle cx="300" cy="300" r="15"
-            fill="#173850" pointer-events="none"/>
-    <circle cx="300" cy="300" r="5"
-            fill="white" pointer-events="none"/>
+    <circle
+      cx="300"
+      cy="300"
+      r="15"
+      fill="#173850"
+      pointer-events="none"
+    />
+    <circle
+      cx="300"
+      cy="300"
+      r="5"
+      fill="white"
+      pointer-events="none"
+    />
   </svg>
 
   <div class="text">
     <h1 lang="sv">Vad är klockan?</h1>
+
     <p class="prefix" lang="sv">Klockan är</p>
-    <output id="words" lang="sv" aria-live="polite"></output>
+
+    <output
+      id="words"
+      lang="sv"
+      aria-live="polite"
+    ></output>
 
     <p class="help">
       Käännä viisareita hiirellä tai sormella.<br>
@@ -187,19 +261,24 @@
       <button data-change="5">+5 min</button>
     </div>
 
-    <p class="small">Minuutit vaihtuvat viiden minuutin välein.</p>
+    <p class="small">
+      Minuutit vaihtuvat viiden minuutin välein.
+    </p>
+
     <button id="fullscreen">Koko näyttö</button>
   </div>
+
 </main>
 
 <script>
 const ns = "http://www.w3.org/2000/svg";
+
 const clock = document.getElementById("clock");
 const hour = document.getElementById("hour");
 const minute = document.getElementById("minute");
 const words = document.getElementById("words");
 
-// Aloitusaika 6.10.
+// Aloitusaika: 6.10.
 let total = 6 * 60 + 10;
 let drag = null;
 
@@ -210,11 +289,14 @@ function svgElement(tag, attributes, text) {
     element.setAttribute(name, value);
   }
 
-  if (text !== undefined) element.textContent = text;
+  if (text !== undefined) {
+    element.textContent = text;
+  }
+
   return element;
 }
 
-// Minuutti- ja tuntimerkit.
+// Kellotaulun minuutti- ja tuntimerkit.
 for (let i = 0; i < 60; i++) {
   const angle = i * Math.PI / 30;
   const major = i % 5 === 0;
@@ -251,13 +333,25 @@ for (let i = 1; i <= 12; i++) {
 }
 
 const hours = [
-  "tolv", "ett", "två", "tre", "fyra", "fem",
-  "sex", "sju", "åtta", "nio", "tio", "elva"
+  "tolv",
+  "ett",
+  "två",
+  "tre",
+  "fyra",
+  "fem",
+  "sex",
+  "sju",
+  "åtta",
+  "nio",
+  "tio",
+  "elva"
 ];
 
+// Kellonaika ruotsiksi.
 function swedishTime(time) {
   const h = Math.floor(time / 60) % 12;
   const m = time % 60;
+
   const current = hours[h];
   const next = hours[(h + 1) % 12];
 
@@ -267,9 +361,9 @@ function swedishTime(time) {
     10: "tio över " + current,
     15: "kvart över " + current,
     20: "tjugo över " + current,
-    25: "fem i halv " + next,
+    25: "tjugofem över " + current,
     30: "halv " + next,
-    35: "fem över halv " + next,
+    35: "tjugofem i " + next,
     40: "tjugo i " + next,
     45: "kvart i " + next,
     50: "tio i " + next,
@@ -279,25 +373,36 @@ function swedishTime(time) {
   return expressions[m];
 }
 
+// Päivitä viisarit ja teksti.
 function render() {
   total = ((total % 720) + 720) % 720;
 
   const h = Math.floor(total / 60);
   const m = total % 60;
 
-  hour.setAttribute("transform", `rotate(${total / 2} 300 300)`);
-  minute.setAttribute("transform", `rotate(${m * 6} 300 300)`);
+  hour.setAttribute(
+    "transform",
+    `rotate(${total / 2} 300 300)`
+  );
+
+  minute.setAttribute(
+    "transform",
+    `rotate(${m * 6} 300 300)`
+  );
 
   words.textContent = swedishTime(total);
 
   hour.setAttribute("aria-valuenow", h || 12);
   hour.setAttribute("aria-valuetext", hours[h]);
+
   minute.setAttribute("aria-valuenow", m);
   minute.setAttribute("aria-valuetext", m + " minuter");
 }
 
+// Hiiren tai sormen kulma suhteessa kellon keskipisteeseen.
 function pointerAngle(event) {
   const point = clock.createSVGPoint();
+
   point.x = event.clientX;
   point.y = event.clientY;
 
@@ -306,17 +411,23 @@ function pointerAngle(event) {
   );
 
   return (
-    Math.atan2(local.x - 300, 300 - local.y) * 180 / Math.PI + 360
+    Math.atan2(
+      local.x - 300,
+      300 - local.y
+    ) * 180 / Math.PI + 360
   ) % 360;
 }
 
+// Viisareiden vetäminen.
 function enableDragging(hand, type) {
   hand.addEventListener("pointerdown", event => {
     if (event.button !== 0 || drag) return;
+
     event.preventDefault();
 
     drag = {
       id: event.pointerId,
+      hand: hand,
       last: pointerAngle(event),
       sum: 0,
       start: total
@@ -326,12 +437,18 @@ function enableDragging(hand, type) {
   });
 
   hand.addEventListener("pointermove", event => {
-    if (!drag || drag.id !== event.pointerId) return;
+    if (
+      !drag ||
+      drag.id !== event.pointerId ||
+      drag.hand !== hand
+    ) {
+      return;
+    }
 
     const angle = pointerAngle(event);
     let difference = angle - drag.last;
 
-    // Viisari voi ylittää kello 12:n kumpaankin suuntaan.
+    // Sallitaan kello 12:n ylittäminen molempiin suuntiin.
     if (difference > 180) difference -= 360;
     if (difference < -180) difference += 360;
 
@@ -339,13 +456,22 @@ function enableDragging(hand, type) {
     drag.last = angle;
 
     const steps = Math.round(drag.sum / 30);
-    total = drag.start + steps * (type === "minute" ? 5 : 60);
+
+    total = drag.start + steps * (
+      type === "minute" ? 5 : 60
+    );
 
     render();
   });
 
   function stopDragging(event) {
-    if (drag && drag.id === event.pointerId) drag = null;
+    if (
+      drag &&
+      drag.id === event.pointerId &&
+      drag.hand === hand
+    ) {
+      drag = null;
+    }
   }
 
   hand.addEventListener("pointerup", stopDragging);
@@ -362,10 +488,15 @@ function enableDragging(hand, type) {
     };
 
     const direction = directions[event.key];
-    if (!direction) return;
+
+    if (!direction || drag) return;
 
     event.preventDefault();
-    total += direction * (type === "minute" ? 5 : 60);
+
+    total += direction * (
+      type === "minute" ? 5 : 60
+    );
+
     render();
   });
 }
@@ -373,16 +504,22 @@ function enableDragging(hand, type) {
 enableDragging(hour, "hour");
 enableDragging(minute, "minute");
 
+// Painikkeet.
 document.querySelectorAll("[data-change]").forEach(button => {
   button.addEventListener("click", () => {
+    if (drag) return;
+
     total += Number(button.dataset.change);
     render();
   });
 });
 
+// Koko näyttö.
 const fullscreen = document.getElementById("fullscreen");
 
-if (!document.fullscreenEnabled) fullscreen.hidden = true;
+if (!document.fullscreenEnabled) {
+  fullscreen.hidden = true;
+}
 
 fullscreen.addEventListener("click", async () => {
   try {
